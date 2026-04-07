@@ -1,0 +1,10 @@
+.git
+.gitignore
+frontend/node_modules/
+frontend/dist/
+__pycache__/
+*.pyc
+.gemini/
+.env/
+.env.local
+.env.development
