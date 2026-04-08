@@ -268,3 +268,14 @@ tr:hover td{background:var(--surface2)}
 }
 .btn-red:hover{background:var(--red-d)}
 .btn-red:active{transform:scale(.98)}
+
+.hide-mobile { display: block; }
+@media (max-width: 480px) {
+  .hide-mobile { display: none !important; }
+}
+@media (max-width: 768px) {
+  .app-container, .layout-grid {
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
