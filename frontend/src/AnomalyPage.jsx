@@ -86,25 +86,25 @@ export default function AnomalyPage() {
   }, [result]);
 
   return (
-    <div style={{ display:"flex", flexDirection:"column", height:"100vh", padding:"20px 24px", gap:16, boxSizing:"border-box", overflow:"hidden" }}>
+    <div className="app-container responsive-padding">
 
       {/* ── Header Row ── */}
-      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", flexShrink:0 }}>
+      <div className="responsive-header" style={{ justifyContent:"space-between" }}>
         <div>
           <h1 style={{ fontSize:22, fontWeight:500, letterSpacing:"-.02em", margin:0 }}>Anomaly Detection</h1>
           <p style={{ fontSize:12, fontFamily:"'DM Mono',monospace", color:"var(--text2)", margin:"3px 0 0" }}>Z-score method · flags values deviating beyond threshold</p>
         </div>
-        <div className={`banner banner-${banner.type}`} style={{ margin:0, padding:"8px 16px", fontSize:12 }}>
+        <div className={`banner banner-${banner.type}`} style={{ margin:0, padding:"8px 16px", fontSize:12, width: "fit-content" }}>
           {banner.type === "loading" && <span className="spinner-el"/>}
           <span>{banner.text}</span>
         </div>
       </div>
 
       {/* ── Main Two-Column Layout ── */}
-      <div style={{ display:"grid", gridTemplateColumns:"300px 1fr", gap:16, flex:1, minHeight:0, overflow:"hidden" }}>
+      <div className="layout-grid">
 
         {/* ── Left Panel ── */}
-        <div style={{ display:"flex", flexDirection:"column", gap:12, overflow:"auto" }}>
+        <div className="scroll-area" style={{ display:"flex", flexDirection:"column", gap:12 }}>
 
           {/* Formula */}
           <div className="card card-pad" style={{ flexShrink:0 }}>
@@ -149,9 +149,9 @@ export default function AnomalyPage() {
             </div>
           </div>
 
-          {/* Summary Cards — stacked 2×2 */}
+          {/* Summary Cards — grid that adapts */}
           {result && (
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, flexShrink:0 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(130px, 1fr))", gap:8, flexShrink:0 }}>
               {[
                 { lbl:"Total Rows",    val:result.scored.length,                                                        sub:"records analysed" },
                 { lbl:"Anomalies",     val:result.anomalies.length,                                                     sub:`≥ ±${threshold}σ`  },
@@ -189,11 +189,11 @@ export default function AnomalyPage() {
         </div>
 
         {/* ── Right Panel ── */}
-        <div style={{ display:"flex", flexDirection:"column", gap:12, minHeight:0, overflow:"hidden" }}>
+        <div className="scroll-area" style={{ display:"flex", flexDirection:"column", gap:12 }}>
 
-          {/* Chart — grows to fill */}
-          <div className="card card-pad" style={{ flex:result ? "0 0 45%" : 1, display:"flex", flexDirection:"column", minHeight:0 }}>
-            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12, flexShrink:0 }}>
+          {/* Chart */}
+          <div className="card card-pad" style={{ flex: "none", minHeight: 320, display:"flex", flexDirection:"column" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12, flexShrink:0, flexWrap: "wrap", gap: 10 }}>
               <div style={{ fontSize:10, fontFamily:"'DM Mono',monospace", color:"var(--text2)", textTransform:"uppercase", letterSpacing:".05em" }}>
                 {result ? `Z-score chart — ${PARAM_LABELS[result.param]} (${result.anomalies.length} anomalies)` : "Run detection to see chart"}
               </div>
@@ -203,14 +203,14 @@ export default function AnomalyPage() {
                 </span>
               )}
             </div>
-            <div style={{ flex:1, position:"relative", minHeight:0 }}>
+            <div style={{ flex:1, position:"relative", minHeight:200 }}>
               <canvas ref={chartRef} style={{ position:"absolute", inset:0, width:"100%", height:"100%" }}/>
             </div>
           </div>
 
-          {/* Anomaly Table — scrollable, fills remainder */}
+          {/* Anomaly Table */}
           {result && (
-            <div className="card card-pad" style={{ flex:1, display:"flex", flexDirection:"column", minHeight:0, overflow:"hidden" }}>
+            <div className="card card-pad" style={{ flex: "none", display:"flex", flexDirection:"column", overflow:"hidden" }}>
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12, flexShrink:0 }}>
                 <div style={{ fontSize:10, fontFamily:"'DM Mono',monospace", color:"var(--text2)", textTransform:"uppercase", letterSpacing:".05em" }}>
                   Anomaly table — top {Math.min(topN, result.anomalies.length)} of {result.anomalies.length}
@@ -222,7 +222,7 @@ export default function AnomalyPage() {
                     No anomalies found. Try lowering the threshold.
                   </p>
                 ) : (
-                  <table style={{ width:"100%" }}>
+                  <table style={{ width:"100%", minWidth: 600 }}>
                     <thead>
                       <tr><th>Row #</th><th>Value</th><th>Z-score</th><th>|Z|</th><th>Severity</th><th>Direction</th></tr>
                     </thead>

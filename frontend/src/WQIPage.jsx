@@ -111,10 +111,10 @@ export default function WQIPage() {
   };
 
   return (
-    <div style={{ display:"flex", flexDirection:"column", height:"100vh", padding:"18px 24px", gap:14, boxSizing:"border-box", overflow:"hidden" }}>
+    <div className="app-container responsive-padding">
 
       {/* ── Header ── */}
-      <div style={{ display:"flex", alignItems:"center", gap:14, flexShrink:0, paddingBottom:14, borderBottom:".5px solid var(--border2)" }}>
+      <div className="responsive-header">
         <svg width="36" height="42" viewBox="0 0 48 56" fill="none">
           <path d="M24 4 C24 4 6 22 6 34 A18 18 0 0 0 42 34 C42 22 24 4 24 4Z" fill="#1D9E75" opacity="0.9"/>
           <path d="M15 38 Q19 32 24 35 Q29 38 33 31" stroke="#fff" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
@@ -126,10 +126,10 @@ export default function WQIPage() {
       </div>
 
       {/* ── Main Two-Column Layout ── */}
-      <div style={{ display:"grid", gridTemplateColumns:"340px 1fr", gap:16, flex:1, minHeight:0, overflow:"hidden" }}>
+      <div className="layout-grid">
 
         {/* ── Left: Inputs ── */}
-        <div style={{ display:"flex", flexDirection:"column", gap:10, overflowY:"auto" }}>
+        <div className="scroll-area" style={{ display:"flex", flexDirection:"column", gap:10 }}>
           <div className="card card-pad" style={{ flexShrink:0 }}>
             <div style={{ fontSize:10, fontFamily:"'DM Mono',monospace", textTransform:"uppercase", letterSpacing:".07em", color:"var(--text3)", marginBottom:12 }}>Parameters</div>
             <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
@@ -143,15 +143,13 @@ export default function WQIPage() {
               Calculate WQI →
             </button>
           </div>
-
-
         </div>
 
         {/* ── Right: Results ── */}
-        <div style={{ display:"flex", flexDirection:"column", gap:12, minHeight:0, overflow:"hidden" }}>
+        <div className="scroll-area" style={{ display:"flex", flexDirection:"column", gap:12 }}>
 
           {!result && (
-            <div style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center" }}>
+            <div style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", minHeight: 200 }}>
               <div style={{ textAlign:"center", fontFamily:"'DM Mono',monospace", color:"var(--text3)", fontSize:13 }}>
                 <div style={{ fontSize:40, marginBottom:12, opacity:.3 }}>💧</div>
                 Set parameters and calculate to see results
@@ -160,10 +158,10 @@ export default function WQIPage() {
           )}
 
           {result && visible && (
-            <div className="fade-up" style={{ display:"flex", flexDirection:"column", gap:12, flex:1, minHeight:0, overflow:"hidden" }}>
+            <div className="fade-up" style={{ display:"flex", flexDirection:"column", gap:12, flex:1, minHeight:0 }}>
 
               {/* Top row: meter + bands */}
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, flexShrink:0 }}>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(280px, 1fr))", gap:12, flexShrink:0 }}>
 
                 {/* Meter card */}
                 <div className="card" style={{ padding:"18px 16px", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
@@ -190,7 +188,7 @@ export default function WQIPage() {
               </div>
 
               {/* Sub-index param chips */}
-              <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:8, flexShrink:0 }}>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(140px, 1fr))", gap:8, flexShrink:0 }}>
                 {result.params.map(p => (
                   <div key={p.name} className="card" style={{ padding:"12px 14px" }}>
                     <div style={{ fontSize:9, fontFamily:"'DM Mono',monospace", color:"var(--text3)", textTransform:"uppercase", letterSpacing:".06em", marginBottom:5 }}>{p.name}</div>

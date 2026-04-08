@@ -7,8 +7,6 @@ Endpoints:
   POST /predict             → Image classification (stacking ensemble)
   POST /api/forecast        → Water quality parameter forecasting
   POST /api/anomaly_batch   → Z-score anomaly detection
-
-Designed for Google Cloud Run deployment.
 """
 
 import os
