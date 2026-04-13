@@ -11,7 +11,7 @@ const LINKS = [
   { id: "wqi",            label: "WQI Calculator" },
   { id: "forecast",       label: "Forecast"        },
   { id: "classification", label: "Classification"  },
-    { id: "anomaly",        label: "Anomaly Detection"},
+  { id: "anomaly",        label: "Anomaly Detection"},
 ];
 
 export default function Nav({ page, setPage }) {

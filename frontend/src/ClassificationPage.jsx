@@ -262,7 +262,7 @@ export default function ClassificationPage() {
                       <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
                         {result.top3?.map((t, idx) => (
                           <div key={idx} style={{ display:"flex", justifyContent:"space-between", background:"var(--surface2)", padding:"10px 14px", borderRadius:"var(--r-sm)", fontFamily:"'DM Mono',monospace", fontSize:12 }}>
-                            <span>{t.class}</span><span style={{ fontWeight:500, color:"var(--teal)" }}>{t.confidence}</span>
+                            <span>{t.class_name || t.class}</span><span style={{ fontWeight:500, color:"var(--teal)" }}>{t.confidence}</span>
                           </div>
                         ))}
                       </div>

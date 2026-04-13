@@ -160,6 +160,11 @@ def train_single(cfg, num_classes, train_loader, val_loader, device, class_names
     best_wts      = copy.deepcopy(model.state_dict())
     patience_cnt  = 0
 
+    history = {
+        'train_acc': [], 'val_acc': [],
+        'train_loss': [], 'val_loss': []
+    }
+
     for epoch in range(1, EPOCHS + 1):
         t0 = time.time()
 
@@ -213,6 +218,12 @@ def train_single(cfg, num_classes, train_loader, val_loader, device, class_names
                 print(f"  ⏹️  Early stop at epoch {epoch}")
                 break
 
+        # Record history
+        history['train_acc'].append(tr_acc)
+        history['val_acc'].append(vl_acc)
+        history['train_loss'].append(tr_loss / len(train_loader.dataset))
+        history['val_loss'].append(vl_loss / len(val_loader.dataset))
+
     model.load_state_dict(best_wts)
     print(f"  🏆  Best val accuracy: {best_acc:.4f}")
 
@@ -256,6 +267,37 @@ def train_single(cfg, num_classes, train_loader, val_loader, device, class_names
         
     print(f"    📈  Saved Confusion Matrix → {cm_path}")
     print(f"    📄  Saved Classification Report → {cr_path}")
+
+    # Learning Curves Plot
+    plt.figure(figsize=(12, 5))
+    
+    # Accuracy
+    plt.subplot(1, 2, 1)
+    plt.plot(range(1, len(history['train_acc']) + 1), history['train_acc'], label='Train Acc', marker='o')
+    plt.plot(range(1, len(history['val_acc']) + 1), history['val_acc'], label='Val Acc', marker='o')
+    plt.title(f'Accuracy - {name}')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.legend()
+    plt.grid(True, linestyle='--', alpha=0.6)
+
+    # Loss
+    plt.subplot(1, 2, 2)
+    plt.plot(range(1, len(history['train_loss']) + 1), history['train_loss'], label='Train Loss', marker='o')
+    plt.plot(range(1, len(history['val_loss']) + 1), history['val_loss'], label='Val Loss', marker='o')
+    plt.title(f'Loss - {name}')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.grid(True, linestyle='--', alpha=0.6)
+
+    plt.tight_layout()
+    lc_dir = '../results/Learning_Curves'
+    os.makedirs(lc_dir, exist_ok=True)
+    lc_path = os.path.join(lc_dir, f'{name.replace("-", "_").lower()}_learning_curves.png')
+    plt.savefig(lc_path)
+    plt.close()
+    print(f"    📈  Saved Learning Curves → {lc_path}")
 
     return best_acc
 
